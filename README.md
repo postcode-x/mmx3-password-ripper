@@ -12,7 +12,7 @@ Each MegamanX3 password consists of 16 items. Each item can be any number from  
 
 **8 ^ 16 = 281.474.976.710.656 total combinations**
 
-Dividing that number by the current rate of the password ripper gives the total amount of seconds required to perform such task:
+Dividing that number by the current rate of the password ripper gives the total amount of seconds required to go through every possible combination:
 
 **281.474.976.710.656 s** 
 
