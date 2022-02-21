@@ -33,6 +33,6 @@ We divide by 4 because each state can be stored in 4 different ways, so:
 
 >**# of non repeated valid passwords = 554.505.704.120 or roughly 554 Billion**
 
-## How much storage space would that be
+## How much storage space would that take?
 
-About **8.45** Terabytes.
+We do not know which passwords map to the same game state, so we need to store the complete set of functional passwords, which would take about **32 Terabytes** of storage.
