@@ -31,4 +31,4 @@ The proportion I found is this:
 
 We divide by 4 because each state can be stored in 4 different ways, so:
 
->**# of non repeated valid passwords = 554.505.704.119,99232 or roughly 554 Billion**
+>**# of non repeated valid passwords = 554.505.704.120 or roughly 554 Billion**
