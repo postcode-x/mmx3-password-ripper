@@ -30,8 +30,3 @@
 *.exe
 *.out
 *.app
-
-# Folders
-/Debug
-/mmx3-password-ripper/Debug
-/.vs
