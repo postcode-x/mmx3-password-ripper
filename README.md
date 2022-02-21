@@ -8,7 +8,7 @@ This is a pretty CPU and memory intensive application, so keep that in mind when
 
 ## How long would it take to get all of the valid game passwords for a single computer?
 
-Each MegamanX3 password consists of 16 items. Each item can be any number from  1 to 8. This means that all of the possible combinations for our case equals:
+Each **Megaman X3** password consists of 16 items. Each item can be any number from  1 to 8. This means that all of the possible combinations for our case equals:
 
 **8 ^ 16 = 281.474.976.710.656 total combinations**
 
