@@ -1,6 +1,11 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
+#include <fstream>
+#include <string>
+
+#define RATE 127
+#define RANGE 100000
 
 static uint8_t remap_table[] = { 7, 2, 1, 4, 8, 3, 6, 5,
 								6, 5, 4, 1, 7, 8, 3, 2,
@@ -34,6 +39,15 @@ static uint8_t hash_table[] = { 0, 32, 0, 4, 1, 0, 0, 2, 128, 0, 0, 8, 64, 0, 16
 						  7, 6, 1, 5, 3, 0, 4, 2, 3, 6, 0, 2, 7, 1, 5, 4,
 						  7, 5, 1, 3, 6, 2, 4, 0, 1, 4, 0, 2, 5, 3, 6, 7,
 						  3, 2, 7, 5, 1, 6, 4, 0, 6, 3, 7, 4, 0, 1, 5, 2 };
+
+
+const int array_size = 16 * sizeof(uint8_t) * (int)( RANGE * 1 / RATE ) + 10000;
+
+uint8_t output_array_1[array_size] = { 0 };
+uint8_t output_array_2[array_size] = { 0 };
+uint8_t output_array_3[array_size] = { 0 };
+uint8_t output_array_4[array_size] = { 0 };
+
 
 int hash_subroutine(uint8_t* _1e8x, int index, int n) {
 
@@ -71,7 +85,7 @@ int hash_subroutine(uint8_t* _1e8x, int index, int n) {
 
 // Bruteforces randomly generated passwords to check if they are valid
 
-void bruteforce(int lower, int upper, bool print) {
+void bruteforce(int lower, int upper, bool print, int thread_number) {
 
 	uint8_t password[16];
 	uint8_t password_copy[16];
@@ -86,6 +100,8 @@ void bruteforce(int lower, int upper, bool print) {
 	uint8_t and_03 = 0;
 
 	int zf = 0;
+
+	int counter = 0;
 
 	for (int u = lower; u < upper; u++) {
 
@@ -201,23 +217,21 @@ void bruteforce(int lower, int upper, bool print) {
 								_1e94 = _1e8x[5] & 191;
 								res = ((_1e8x[0] | _1e8x[1]) | _1e94) | _1e8x[4];
 								if (res == 0) {
-									if (print) {
-										for (int i = 0; i < 16; i++) {
-											std::cout << (int)password_copy[i] << ' ';
-										}
-										std::cout << std::endl;
-									}
+									memcpy(  thread_number == 1 ? &output_array_1[counter * 16] :
+											(thread_number == 2 ? &output_array_2[counter * 16] :
+											(thread_number == 3 ? &output_array_3[counter * 16] :
+											&output_array_4[counter * 16])), password_copy, 16 * sizeof(uint8_t));
+									counter += 1;
 								}
 							}
 							else {
 								int last_test = _1e8x[3] & 4;
 								if (last_test == 0) {
-									if (print) {
-										for (int i = 0; i < 16; i++) {
-											std::cout << (int)password_copy[i] << ' ';
-										}
-										std::cout << std::endl;
-									}
+									memcpy(  thread_number == 1 ? &output_array_1[counter * 16] :
+											(thread_number == 2 ? &output_array_2[counter * 16] :
+											(thread_number == 3 ? &output_array_3[counter * 16] :
+											&output_array_4[counter * 16])), password_copy, 16 * sizeof(uint8_t));
+									counter += 1;
 								}
 							}
 						}
@@ -226,6 +240,47 @@ void bruteforce(int lower, int upper, bool print) {
 			}
 		}
 	}
+
+	//std::cout << counter << std::endl;
+	/*for (int i = 0; i < 16 * counter; i++) {
+		if ((i + 1) % 16 == 0)
+			std::cout << (int)output_array_1[i] << std::endl;
+		else {
+			std::cout << (int)output_array_1[i] << " ";
+		}
+	}*/
+
+	std::string filename = "Thread ";
+	filename += std::to_string(thread_number);
+	filename += " - Lower ";
+	filename += std::to_string(lower);
+	filename += " - Upper ";
+	filename += std::to_string(upper);
+	filename += " - Results ";
+	filename += std::to_string(counter);
+	filename += ".html";
+
+	std::ofstream myfile(filename.c_str() /*, ios::out | ios::binary*/);
+	if (myfile.is_open())
+	{
+		myfile << "<html>";
+		for (int i = 0; i < 16 * counter; i++) {
+			myfile << (int) (thread_number == 1 ? output_array_1[i] :
+							(thread_number == 2 ? output_array_2[i] :
+							(thread_number == 3 ? output_array_3[i] :
+							output_array_4[i]))) << " ";
+			if ((i + 1) % 16 == 0) {
+				myfile << "<br>";
+			}
+		}
+		myfile << "</html>";
+		myfile.close();
+	}
+	else { std::cout << "Unable to open file"; 
+	myfile.close();
+	}
+
+	std::cout << counter << std::endl;
 
 }
 
@@ -384,10 +439,10 @@ int main() {
 	//uint8_t password[16] = { 7, 3, 5, 7, 5, 3, 6, 3, 6, 4, 6, 2, 7, 8, 4, 1 };
 	//fast_test(password, true);
 
-	std::thread th1(bruteforce, 0, 25000000, false);
-	std::thread th2(bruteforce, 25000000, 50000000, false);
-	std::thread th3(bruteforce, 50000000, 75000000, false);
-	std::thread th4(bruteforce, 75000000, 100000000, false);
+	std::thread th1(bruteforce, 0, RANGE, false, 1);
+	std::thread th2(bruteforce, RANGE, 2 * RANGE, false, 2);
+	std::thread th3(bruteforce, 2 * RANGE, 3 * RANGE, false, 3);
+	std::thread th4(bruteforce, 3 * RANGE, 4 * RANGE, false, 4);
 
 	th1.join();
 	th2.join();
