@@ -14,7 +14,7 @@ Each **Megaman X3** password consists of 16 items. Each item can be any number f
 
 Dividing that number by the current rate of the password ripper gives the total amount of seconds required to go through every possible combination:
 
-**281.474.976.710.656 s** 
+**281.474.976.710.656 seconds** 
 
 We divide by **60 * 60 * 24 * 365** to get the approximate number of years:
 
