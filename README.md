@@ -1,5 +1,5 @@
 # mmx3-password-ripper
-Fast multithreaded password ripper for the game MMX3 
+Fast multithreaded password ripper for the game Megaman X3
  
 ## WIP
 This is basically a rehash of [this project](https://github.com/postcode-x/mmx3-password-generator) but in this case I made it in C++, which is more performance oriented and currently capable of testing roughly 1 million passwords per second on an Intel Core i3 without file I/O, which is on the works and should be ready soon.
@@ -21,5 +21,14 @@ We divide by **60 * 60 * 24 * 365** to get the approximate number of years:
 **9 years** 
 
 
+## Statistically, how many valid passwords should we expect to find?
 
+The proportion I found is this:
 
+**Proportion of valid passwords = 197.000 / 25.000.000 ~ 1/127**
+
+**Complete set of valid passwords = 2.218.022.816.479 or roughly 2.2 Trillion**
+
+We divide by 4 because each state can be stored in 4 different ways, so:
+
+**# of non repeated valid passwords = 554.505.704.119,99232 or roughly 554 Billion**
