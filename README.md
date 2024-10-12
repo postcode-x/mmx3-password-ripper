@@ -1,8 +1,15 @@
 # mmx3-password-ripper
 
+**Disclaimer: This information is strictly for educational purposes.** 
+
+You can see the concepts behind this code being applied here: https://www.youtube.com/watch?v=WZTNGIcVez4
+
+![alt text](https://github.com/postcode-x/mmx3-password-generator/blob/main/screenshot.png)
+
+
 ## Fast multithreaded password ripper for the game Megaman X3
 
-This is basically a rehash of [this project](https://github.com/postcode-x/mmx3-password-generator) but in this case I made it in C++, which is more performance oriented and currently capable of testing roughly 1 million passwords per second on an Intel Core i3 with 16GB of RAM.
+Currently capable of testing roughly 1 million passwords per second on an Intel Core i3 with 16GB of RAM.
 
 
 ## Notes
